@@ -1,0 +1,15 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-09-27"
+---
+
+
+This assignment has three questions:  
+
+1. in a class of 35 students, Dr. J bets $1 against student's $1  that at least 2 students have the same birthday, month, day.
+Find the probability thatat least two student have the same birthday.  If 26 students in the class take the bet how much is Dr. J expected to win/lose.   How much should Dr. J wager against the student's $1 to make this a fair bet?
+
+2. Assume class size is 26 instead of 35.  With the same bet ($1 ot $1) what is the probability Dr. J wins the bet now.  If 20 of the 26 students make the bet, what is Dr. J's expected profit/loss?
+
+3. What size class (how many students) makes the $1 againt $1 a fair bet?
