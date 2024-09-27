@@ -1,16 +1,132 @@
 ---
-title: "Untitled"
-author: "Dr. J"
+title: "BBets"
+author: "Your Name Here"
 output: html_document
 date: "2024-09-27"
 ---
 
+This assignment is designed to:
+1. use ChatGPT to develop Rmarkdown code
+2. illustrate the use of simulation to estimate the probability of 2 or more people having the same birthday (month, day) from a random sample n 
 
 This assignment has three questions:  
 
-1. in a class of 35 students, Dr. J bets $1 against student's $1  that at least 2 students have the same birthday, month, day.
-Find the probability thatat least two student have the same birthday.  If 26 students in the class take the bet how much is Dr. J expected to win/lose.   How much should Dr. J wager against the student's $1 to make this a fair bet?
+use the prompt:
 
-2. Assume class size is 26 instead of 35.  With the same bet ($1 ot $1) what is the probability Dr. J wins the bet now.  If 20 of the 26 students make the bet, what is Dr. J's expected profit/loss?
+write rmarkdown code to find the probability that 2 or more people in a class of size 35 have the same birthday (month, day) by simulation. Print this probability. Repeat this process 100 times, save each probability in a vector, probs. Print the mean and standard deviation of probs.  Plot a histogram of this probs. Get a 95 percent confidence interval of the mean of probs.  print the amount of money Dr. J should have to bet against the student's $1 to make this a fair bet.
 
-3. What size class (how many students) makes the $1 againt $1 a fair bet?
+
+Then answer the following 3 questions:
+
+1. in a class of 35 students, Dr. J bets $1 against student's $1  that at least 2 students have the same birthday, (month, day).  
+a)Find the probability that at least two student have the same birthday.  
+b)If 26 students in the class take the bet how much is Dr. J expected to win/lose.   
+c)How much should Dr. J wager against the student's $1 to make this a fair bet?  Vary the payoff (Dr. J should pay more that $1 against the student's $1 bet) to make the mean probability 0.5... i.e. a fair game
+
+
+2. Assume class size is 27 instead of 35.  
+a)With the same bet ($1 to $1) what is the probability Dr. J wins the bet now.  
+b)If 20 of the 27 students make the bet, what is Dr. J's expected profit/loss?
+
+3. What size class (how many students) makes the $1 againt $1 a fair bet?  I.e. find the sample size that makes the mean probability close to 0.5
+
+
+```{r setup, include=FALSE}
+set.seed(123)  # Set seed for reproducibility
+```
+
+```{r}
+# Function to simulate if two or more people share a birthday
+same_birthday_prob <- function(class_size, n_sim) {
+  count_same_birthday <- 0
+  for (i in 1:n_sim) {
+    birthdays <- sample(1:365, class_size, replace = TRUE)  # Generate random birthdays
+    if (length(unique(birthdays)) < class_size) {
+      count_same_birthday <- count_same_birthday + 1
+    }
+  }
+  return(count_same_birthday / n_sim)  # Return probability
+}
+
+# Simulation settings
+class_size <- 35
+n_sim <- 1000
+n_trials <- 100
+
+# Vector to store the probabilities from each trial
+probs <- numeric(n_trials)
+
+# Run the simulation 100 times
+for (i in 1:n_trials) {
+  probs[i] <- same_birthday_prob(class_size, n_sim)
+}
+
+```
+
+## mean and std dev 
+
+```{r, echo=F}
+# Print mean, std of probabilities
+
+mean_probs <- mean(probs)
+sd_probs <- sd(probs)
+
+cat("Mean Probability:", mean_probs, "\n")
+cat("Standard Deviation of Probabilities:", sd_probs, "\n")
+
+```
+
+```{r}
+hist(probs, main = "Histogram of Probabilities", xlab = "Probability", col = "lightblue", border = "black")
+
+```
+
+```{r}
+# Calculate 95% confidence interval
+error_margin <- qt(0.975, df=n_trials-1) * sd_probs / sqrt(n_trials)
+conf_interval <- c(mean_probs - error_margin, mean_probs + error_margin)
+
+cat("95% Confidence Interval for the Mean Probability: [", conf_interval[1], ",", conf_interval[2], "]\n")
+
+```
+
+
+get answers for a smaller class
+
+```{r}
+# Simulation settings
+class_size <- 27
+n_sim <- 1000
+n_trials <- 100
+
+# Vector to store the probabilities from each trial
+probs <- numeric(n_trials)
+
+# Run the simulation 100 times
+for (i in 1:n_trials) {
+  probs[i] <- same_birthday_prob(class_size, n_sim)
+}
+
+```
+
+## mean and std dev 
+
+```{r echo=F}
+# Print mean, std of probabilities
+
+mean_probs <- mean(probs)
+sd_probs <- sd(probs)
+
+cat("Mean Probability:", mean_probs, "\n")
+cat("Standard Deviation of Probabilities:", sd_probs, "\n")
+
+```
+
+
+
+### Explanation:
+
+- **`same_birthday_prob` function**: Simulates whether at least two people in a group of `class_size` share a birthday, repeated `n_sim` times. It returns the proportion of simulations where a birthday match occurs.
+- **`probs` vector**: Stores the results of running the birthday problem simulation 100 times.
+- **Mean, standard deviation, and histogram**: Summarizes and visualizes the distribution of probabilities.
+- **Confidence interval**: Calculates a 95% confidence interval for the mean of the simulated probabilities.
