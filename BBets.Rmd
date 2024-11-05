@@ -172,9 +172,26 @@ for (i in 1:n_trials) {
 ```
 
 ```{r}
+# Simulation settings
+class_size <- 27
+n_sim <- 1000
+n_trials <- 100
+
+# Vector to store the probabilities from each trial
+probs <- numeric(n_trials)
+
+# Run the simulation 100 times
+for (i in 1:n_trials) {
+  probs[i] <- same_birthday_prob(class_size, n_sim)
+}
+
+```
+
+```{r}
 hist(probs, main = "Histogram of Probabilities", xlab = "Probability", col = "lightblue", border = "black")
 
 ```
+
 
 ## Mean and std dev
 ```{r echo=F}
@@ -187,6 +204,85 @@ cat("Mean Probability:", mean_probs, "\n")
 cat("Standard Deviation of Probabilities:", sd_probs, "\n")
 
 ```
+```{r}
+# Calculate 95% confidence interval
+error_margin <- qt(0.975, df=n_trials-1) * sd_probs / sqrt(n_trials)
+conf_interval <- c(mean_probs - error_margin, mean_probs + error_margin)
+
+cat("95% Confidence Interval for the Mean Probability: [", conf_interval[1], ",", conf_interval[2], "]\n")
+
+```
+## Question 3
+```{r}
+# Function to simulate if two or more people share a birthday
+same_birthday_prob <- function(class_size, n_sim) {
+  count_same_birthday <- 0
+  for (i in 1:n_sim) {
+    birthdays <- sample(1:365, class_size, replace = TRUE)  # Generate random birthdays
+    if (length(unique(birthdays)) < class_size) {
+      count_same_birthday <- count_same_birthday + 1
+    }
+  }
+  return(count_same_birthday / n_sim)  # Return probability
+}
+
+# Simulation settings
+class_size <- 26
+n_sim <- 1000
+n_trials <- 100
+
+# Vector to store the probabilities from each trial
+probs <- numeric(n_trials)
+
+# Run the simulation 100 times
+for (i in 1:n_trials) {
+  probs[i] <- same_birthday_prob(class_size, n_sim)
+}
+
+```
+
+```{r}
+# Simulation settings
+class_size <- 23
+n_sim <- 1000
+n_trials <- 100
+
+# Vector to store the probabilities from each trial
+probs <- numeric(n_trials)
+
+# Run the simulation 100 times
+for (i in 1:n_trials) {
+  probs[i] <- same_birthday_prob(class_size, n_sim)
+}
+
+```
+
+```{r}
+hist(probs, main = "Histogram of Probabilities", xlab = "Probability", col = "lightblue", border = "black")
+
+```
+Mean and std dev
+
+```{r echo=F}
+# Print mean, std of probabilities
+
+mean_probs <- mean(probs)
+sd_probs <- sd(probs)
+
+cat("Mean Probability:", mean_probs, "\n")
+cat("Standard Deviation of Probabilities:", sd_probs, "\n")
+
+```
+
+```{r}
+# Calculate 95% confidence interval
+error_margin <- qt(0.975, df=n_trials-1) * sd_probs / sqrt(n_trials)
+conf_interval <- c(mean_probs - error_margin, mean_probs + error_margin)
+
+cat("95% Confidence Interval for the Mean Probability: [", conf_interval[1], ",", conf_interval[2], "]\n")
+
+```
+In order for it to be a fair bet the class would need to have 23 students.
 
 ### Explanation:
 
