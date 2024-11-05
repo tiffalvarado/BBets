@@ -91,11 +91,11 @@ cat("95% Confidence Interval for the Mean Probability: [", conf_interval[1], ","
 ```
 
 
-get answers for a smaller class
+get answers for a smaller class 
 
 ```{r}
 # Simulation settings
-class_size <- 27
+class_size <- 26
 n_sim <- 1000
 n_trials <- 100
 
@@ -113,6 +113,7 @@ for (i in 1:n_trials) {
 hist(probs, main = "Histogram of Probabilities", xlab = "Probability", col = "lightblue", border = "black")
 
 ```
+
 
 ## mean and std dev 
 
