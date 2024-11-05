@@ -109,6 +109,11 @@ for (i in 1:n_trials) {
 
 ```
 
+```{r}
+hist(probs, main = "Histogram of Probabilities", xlab = "Probability", col = "lightblue", border = "black")
+
+```
+
 ## mean and std dev 
 
 ```{r echo=F}
